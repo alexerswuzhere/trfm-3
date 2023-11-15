@@ -1,0 +1,38 @@
+variable "digitalocean_token" {
+  type = string
+}
+
+variable "droplet_name" {
+  type = string
+  default = "droplet-to-task"
+}
+
+variable "region" {
+  type = string
+  default = "AMS3"
+}
+
+variable "droplet_size" {
+    type = string
+    default = "s-1vcpu-1gb"
+}
+
+variable "private_ssh_key_directory" {
+  description = "input directory to ssh PRIVATE file"
+  type = string
+}
+
+variable "private_key_pem_name" {
+  description = "input name to ssh PRIVATE file"
+  type = string
+}
+
+variable "public_ssh_key_directory" {
+  description = "input directory to ssh PUBLIC file"
+  type = string
+}
+
+variable "public_ssh_key_name" {
+  description = "input name to ssh PUBLIC file"
+  type = string
+}
