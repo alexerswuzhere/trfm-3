@@ -9,7 +9,7 @@ data "digitalocean_ssh_keys" "keys" {
 resource "digitalocean_ssh_key" "my_tf_key" {
   depends_on = [local_file.ssh_public_file]
    name = "alexerswuzhere_at_gmail_com"
-   public_key = file("${local_file.ssh_public_file.filename}")
+   public_key = file("${var.public_ssh_key_directory}${var.public_ssh_key_name}.ssh")
 }
 
 
