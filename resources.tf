@@ -8,8 +8,8 @@ data "digitalocean_ssh_keys" "keys" {
 
 resource "digitalocean_ssh_key" "my_tf_key" {
   depends_on = [local_file.ssh_public_file]
-   name = "alexerswuzhere_at_gmail_com"
-   public_key = file("${var.public_ssh_key_directory}${var.public_ssh_key_name}.ssh")
+   name = var.digital_ocean_key_name
+   public_key = fileexists("${var.public_ssh_key_directory}${var.public_ssh_key_name}.ssh") == true ? file("${var.public_ssh_key_directory}${var.public_ssh_key_name}.ssh") : tls_private_key.my_key.public_key_openssh
 }
 
 

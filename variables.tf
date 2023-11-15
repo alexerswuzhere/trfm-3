@@ -36,3 +36,8 @@ variable "public_ssh_key_name" {
   description = "input name to ssh PUBLIC file"
   type = string
 }
+
+
+variable "digital_ocean_key_name" {
+  default = "input your public ssh key name in digital_ocean"
+}
