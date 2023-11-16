@@ -6,10 +6,12 @@ data "digitalocean_ssh_keys" "keys" {
 }
 
 
+
 resource "digitalocean_ssh_key" "my_tf_key" {
    name = var.digital_ocean_key_name
    public_key = fileexists("${var.public_ssh_key_directory}${var.public_ssh_key_name}.ssh") == true ? file("${var.public_ssh_key_directory}${var.public_ssh_key_name}.ssh") : tls_private_key.my_key.public_key_openssh
 }
+
 
 
 resource "digitalocean_droplet" "droplet_to_task" {
@@ -22,10 +24,12 @@ resource "digitalocean_droplet" "droplet_to_task" {
 }
 
 
+
 resource "tls_private_key" "my_key" {
   algorithm = "RSA"
   rsa_bits = 4096
 }
+
 
 
 resource "local_sensitive_file" "pem_file" {
