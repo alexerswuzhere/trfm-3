@@ -1,0 +1,8 @@
+digitalocean_token = 
+private_ssh_key_directory = 
+private_key_pem_name = "
+public_ssh_key_directory = 
+public_ssh_key_name = 
+digital_ocean_key_name = 
+tag1 = 
+tag2 = 

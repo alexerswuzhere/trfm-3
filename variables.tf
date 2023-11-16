@@ -39,5 +39,32 @@ variable "public_ssh_key_name" {
 
 
 variable "digital_ocean_key_name" {
-  default = "input your public ssh key name in digital_ocean"
+  description = "input your public ssh key name in digital_ocean"
+}
+
+
+
+locals {
+  list_keys_id = [
+    for i in jsondecode(data.http.example.response_body)["ssh_keys"][*] : 
+    i.id
+    if i.name == "REBRAIN.SSH.PUB.KEY"
+  ]
+}
+
+
+locals {
+  key_id = local.list_keys_id[0]
+}
+
+
+variable "tag1" {
+  description = "input your first tag to digital_ocean droplet"
+  type = string
+}
+
+
+variable "tag2" {
+  description = "input your second tag to digital_ocean droplet"
+  type = string
 }
