@@ -59,4 +59,15 @@ data "http" "example" {
   }
 }
 
+resource "aws_route53_zone" "primary" {
+  name = "srwx.net"
+}
 
+
+resource "aws_route53_record" "www" {
+  zone_id = aws_route53_zone.primary.zone_id
+  name    = "alexersuwzhere.devops.rebrain.srwx.net"
+  type    = "A"
+  ttl     = 300
+  records = [digitalocean_droplet.droplet_to_task.ipv4_address]
+}

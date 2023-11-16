@@ -53,3 +53,21 @@ variable "tag2" {
   description = "input your second tag to digital_ocean droplet"
   type = string
 }
+
+
+variable "aws_acces_token" {
+  description = "input your aws access token"
+  type = string
+}
+
+
+variable "aws_secret_key" {
+  description = "input your aws secret key"
+  type = string
+}
+
+
+variable "aws_region" {
+  description = "input aws_region"
+  type = string
+}
