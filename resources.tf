@@ -59,15 +59,15 @@ data "http" "example" {
   }
 }
 
-resource "aws_route53_zone" "primary" {
-  name = "srwx.net"
+data "aws_route53_zone" "selected" {
+  name = "devops.rebrain.srwx.net"
 }
 
 
 resource "aws_route53_record" "www" {
-  zone_id = aws_route53_zone.primary.zone_id
-  name    = "alexersuwzhere.devops.rebrain.srwx.net"
+  zone_id = data.aws_route53_zone.selected.zone_id
+  name    = local.final_dns
   type    = "A"
   ttl     = 300
-  records = [digitalocean_droplet.droplet_to_task.ipv4_address]
+  records = [local.droplet_ip]
 }
