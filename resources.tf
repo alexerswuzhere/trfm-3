@@ -15,7 +15,8 @@ resource "digitalocean_ssh_key" "my_tf_key" {
 
 
 resource "digitalocean_droplet" "droplet_to_task" {
-  name = var.droplet_name
+  count = var.amount_of_vds
+  name = "${var.droplet_name}-${count.index + 1}"
   region = var.region
   image = "ubuntu-23-10-x64"
   size = var.droplet_size
@@ -49,6 +50,8 @@ resource "local_file" "ssh_public_file" {
   content = tls_private_key.my_key.public_key_openssh
 }
 
+
+
 data "http" "example" {
   url = "https://api.digitalocean.com/v2/account/keys?per_page=100&page=1"
 
@@ -59,15 +62,19 @@ data "http" "example" {
   }
 }
 
+
+
 data "aws_route53_zone" "selected" {
   name = "devops.rebrain.srwx.net"
 }
 
 
+
 resource "aws_route53_record" "www" {
+  count = var.amount_of_vds
   zone_id = data.aws_route53_zone.selected.zone_id
-  name    = local.final_dns
+  name    = "${var.username}-${count.index + 1}.${data.aws_route53_zone.selected.name}"
   type    = "A"
   ttl     = 300
-  records = [local.droplet_ip]
+  records = [digitalocean_droplet.droplet_to_task[count.index].ipv4_address]
 }
