@@ -73,8 +73,8 @@ data "aws_route53_zone" "selected" {
 resource "aws_route53_record" "www" {
   count = var.amount_of_vds
   zone_id = data.aws_route53_zone.selected.zone_id
-  name    = "${var.username}-${count.index + 1}.${data.aws_route53_zone.selected.name}"
+  name    = "${var.username}-${count.index + 1}"
   type    = "A"
   ttl     = 300
-  records = [digitalocean_droplet.droplet_to_task[count.index].ipv4_address]
+  records = [local.list_of_ips[count.index]]
 }
