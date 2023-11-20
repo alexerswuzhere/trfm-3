@@ -34,7 +34,7 @@ resource "digitalocean_droplet" "droplet_to_task" {
 
   provisioner "remote-exec" {
     inline = [
-      "echo root:${var.root_pass} | chpasswd"
+      "echo root:${random_string.random[count.index].result} | chpasswd"
     ]
   }
 }
@@ -92,4 +92,12 @@ resource "aws_route53_record" "www" {
   type    = "A"
   ttl     = 300
   records = [local.list_of_ips[count.index]]
+}
+
+
+
+resource "random_string" "random" {
+  count = var.amount_of_vds
+  length           = 16
+  special = false
 }

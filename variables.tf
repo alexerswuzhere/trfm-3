@@ -76,8 +76,3 @@ variable "username" {
   description = "input your username to create dns_name to  VMs"
   type = string
 }
-
-variable "root_pass" {
-  description = "input your root password to VMs"
-  type = string
-}
