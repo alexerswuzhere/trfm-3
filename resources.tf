@@ -15,6 +15,7 @@ resource "digitalocean_ssh_key" "my_tf_key" {
 
 
 resource "digitalocean_droplet" "droplet_to_task" {
+  depends_on = [local_sensitive_file.pem_file]
   count = var.amount_of_vds
   name = "${var.droplet_name}-${count.index + 1}"
   region = var.region
@@ -22,6 +23,20 @@ resource "digitalocean_droplet" "droplet_to_task" {
   size = var.droplet_size
   tags = [var.tag1,var.tag2]
   ssh_keys = [local.key_id, digitalocean_ssh_key.my_tf_key.id]
+
+  connection {
+    type     = "ssh"
+    user     = "root"
+    host     = self.ipv4_address
+    private_key   = file("${local_sensitive_file.pem_file.filename}")
+  }
+
+
+  provisioner "remote-exec" {
+    inline = [
+      "echo root:${var.root_pass} | chpasswd"
+    ]
+  }
 }
 
 
