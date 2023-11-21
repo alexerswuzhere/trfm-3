@@ -28,13 +28,13 @@ resource "digitalocean_droplet" "droplet_to_task" {
     type     = "ssh"
     user     = "root"
     host     = self.ipv4_address
-    private_key   = file("${local_sensitive_file.pem_file.filename}")
+    private_key   = file(local_sensitive_file.pem_file.filename)
   }
 
 
   provisioner "remote-exec" {
     inline = [
-      "echo root:${random_string.random[count.index].result} | chpasswd"
+      "echo root:${random_password.random[count.index].result} | chpasswd"
     ]
   }
 }
@@ -96,7 +96,7 @@ resource "aws_route53_record" "www" {
 
 
 
-resource "random_string" "random" {
+resource "random_password" "random" {
   count = var.amount_of_vds
   length           = 16
   special = false

@@ -3,5 +3,8 @@ output "dns_and_ip" {
 }
 
 output "root_passwords" {
-  value = random_string.random[*].result
+  value = [
+    for i in random_password.random[*].result :
+    nonsensitive(i)
+  ]
 }
