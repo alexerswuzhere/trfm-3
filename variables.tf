@@ -2,11 +2,6 @@ variable "digitalocean_token" {
   type = string
 }
 
-variable "droplet_name" {
-  type = string
-  default = "droplet-to-task"
-}
-
 variable "region" {
   type = string
   default = "AMS3"
@@ -67,12 +62,14 @@ variable "aws_region" {
   default = "eu-central-1"
 }
 
-variable "amount_of_vds" {
-  description = "input amount of vds"
-  type = string
-}
-
-variable "username" {
-  description = "input your username to create dns_name to  VMs"
-  type = string
+variable "devs" {
+  type = list
+  default = [
+    {login = "alexerwuzhere"
+    prefix = "lb"},
+    {login = "alexerwuzhere"
+    prefix = "app1"},
+    {login = "alexerwuzhere"
+    prefix = "app2"}
+  ]
 }

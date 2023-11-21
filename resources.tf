@@ -16,8 +16,8 @@ resource "digitalocean_ssh_key" "my_tf_key" {
 
 resource "digitalocean_droplet" "droplet_to_task" {
   depends_on = [local_sensitive_file.pem_file]
-  count = var.amount_of_vds
-  name = "${var.droplet_name}-${count.index + 1}"
+  count = length(var.devs)
+  name = var.devs[count.index].prefix
   region = var.region
   image = "ubuntu-23-10-x64"
   size = var.droplet_size
@@ -86,9 +86,9 @@ data "aws_route53_zone" "selected" {
 
 
 resource "aws_route53_record" "www" {
-  count = var.amount_of_vds
+  count = length(var.devs)
   zone_id = data.aws_route53_zone.selected.zone_id
-  name    = "${var.username}-${count.index + 1}"
+  name    = "${var.devs[count.index].login}-${var.devs[count.index].prefix}"
   type    = "A"
   ttl     = 300
   records = [local.list_of_ips[count.index]]
@@ -97,7 +97,18 @@ resource "aws_route53_record" "www" {
 
 
 resource "random_password" "random" {
-  count = var.amount_of_vds
+  count = length(var.devs)
   length           = 16
   special = false
+}
+
+
+
+locals {
+  final_list = yamlencode({for i in var.devs: index(var.devs,i) + 1 => "${aws_route53_record.www[index(var.devs,i)].name}.devops.rebrain.srwx.net ${digitalocean_droplet.droplet_to_task[index(var.devs,i)].ipv4_address} ${nonsensitive(random_password.random[index(var.devs,i)].result)}"})
+}
+
+resource "local_file" "foo" {
+  content  = local.final_list
+  filename = "${path.module}/final.txt"
 }
