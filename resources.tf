@@ -104,18 +104,8 @@ resource "random_password" "random" {
 
 
 
-# locals {
-#   final_list = yamlencode({for i in var.devs: index(var.devs,i) + 1 => "${aws_route53_record.www[index(var.devs,i)].name}.devops.rebrain.srwx.net ${digitalocean_droplet.droplet_to_task[index(var.devs,i)].ipv4_address} ${random_password.random[index(var.devs,i)].result}"})
-# }
-
-
-
-# resource "local_file" "foo" {
-#   content  = local.final_list
-#   filename = "${path.module}/final.txt"
-# }
 
 resource "local_file" "foo" {
-  content  = templatefile("final_file.tftpl",{devs = var.devs[*],fqdn = aws_route53_record.www[*],ip = digitalocean_droplet.droplet_to_task[*],passwords = random_password.random[*]})
+  content  = templatefile("final_file.tftpl",{fqdn = aws_route53_record.www[*],ip = digitalocean_droplet.droplet_to_task[*],passwords = random_password.random[*]})
   filename = "${path.module}/final.txt"
 }

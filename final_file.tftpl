@@ -1,2 +1,2 @@
-%{ for i in devs }${index(devs,i) + 1}: ${fqdn[index(devs,i)].name}.devops.rebrain.srwx.net ${ip[index(devs,i)].ipv4_address} ${passwords[index(devs,i)].result}
+%{ for index ,i in fqdn[*].name }${index + 1}: ${i}.devops.rebrain.srwx.net ${ip[index].ipv4_address} ${passwords[index].result}
 %{ endfor }
